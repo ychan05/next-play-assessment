@@ -33,6 +33,7 @@ export function useTasks(userId: string | undefined) {
     description?: string
     priority?: Priority
     due_date?: string
+    assignee_id?: string
   }) => {
     if (!userId) {
         return { error: 'No session available' }
@@ -49,7 +50,7 @@ export function useTasks(userId: string | undefined) {
       priority: input.priority ?? 'normal',
       due_date: input.due_date ?? null,
       position: Date.now(),
-      assignee_id: null,
+      assignee_id: input.assignee_id ?? null,
       user_id: userId,
       created_at: new Date().toISOString(),
     }
@@ -64,6 +65,7 @@ export function useTasks(userId: string | undefined) {
         priority: input.priority ?? 'normal',
         due_date: input.due_date ?? null,
         position: newTask.position,
+        assignee_id: input.assignee_id ?? null
     }).select().single()
 
     // if the insertion fails, remove the temporary task and return the error
@@ -109,5 +111,18 @@ export function useTasks(userId: string | undefined) {
     return { error: null }
   }, [tasks])
 
-  return { tasks, setTasks, loading, error, refetch: fetchTasks, createTask, moveTask, removeTask }
+  // assign task to team member
+  const assignTask = useCallback (async (taskId: string, assignee_id: string | null) => {
+    setTasks(prev => prev.map(task => task.id === taskId ? { ...task, assignee_id: assignee_id } : task))
+
+    const { error } = await supabase.from('tasks').update({ assignee_id }).eq('id', taskId)
+
+    if (error) {
+      fetchTasks()
+      return { error: error.message }
+    }
+    return { error: null }
+  }, [fetchTasks])
+
+  return { tasks, setTasks, loading, error, refetch: fetchTasks, createTask, moveTask, removeTask, assignTask }
 }

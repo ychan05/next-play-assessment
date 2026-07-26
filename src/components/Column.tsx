@@ -2,7 +2,7 @@
 
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { useDroppable } from '@dnd-kit/core'
-import type { Status, Task } from '../types'
+import type { Status, Task, TeamMember } from '../types'
 import { TaskCard } from './TaskCard'
 
 interface Props {
@@ -10,9 +10,11 @@ interface Props {
   label: string
   tasks: Task[]
   onDelete: (taskId: string) => void
+  onAssign: (taskId: string, assigneeId: string | null) => void
+  members: TeamMember[]
 }
 
-export function Column({ id, label, tasks, onDelete }: Props) {
+export function Column({ id, label, tasks, onDelete, members, onAssign }: Props) {
   const { setNodeRef } = useDroppable({ id })
 
   return (
@@ -27,7 +29,7 @@ export function Column({ id, label, tasks, onDelete }: Props) {
             {tasks.length === 0 ? (
             <div className="empty-state">No tasks yet</div>
             ) : (
-            tasks.map(task => <TaskCard key={task.id} task={task} onDelete={onDelete} />)
+            tasks.map(task => <TaskCard task={task} members={members} onDelete={onDelete} onAssign={onAssign} />)
             )}
         </SortableContext>
       </div>

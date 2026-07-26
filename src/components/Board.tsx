@@ -11,7 +11,7 @@ import {
   type DragStartEvent,
 } from '@dnd-kit/core'
 import { useState } from 'react'
-import { COLUMNS, type Task, type Status } from '../types'
+import { COLUMNS, type Task, type Status, type TeamMember } from '../types'
 import { Column } from './Column'
 import { TaskCard } from './TaskCard'
 import { computePosition } from '../lib/position'
@@ -20,9 +20,11 @@ interface Props {
   tasks: Task[]
   onMove: (taskId: string, newStatus: Status, newPosition: number) => void
   onDelete: (taskId: string) => void
+  members: TeamMember[]
+  onAssign: (taskId: string, assignee_id: string | null) => void
 }
 
-export function Board({ tasks, onMove, onDelete }: Props) {
+export function Board({ tasks, onMove, onDelete, members, onAssign }: Props) {
   const [activeTask, setActiveTask] = useState<Task | null>(null)
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 4 } })
@@ -126,11 +128,13 @@ function handleDragEnd(event: DragEndEvent) {
             label={col.label}
             tasks={tasks.filter(task => task.status === col.id).sort((a, b) => a.position - b.position)}
             onDelete={onDelete}
+            onAssign={onAssign}
+            members={members}
           />
         ))}
       </div>
       <DragOverlay>
-        {activeTask ? <TaskCard task={activeTask} onDelete={() => {}} /> : null}
+        {activeTask ? <TaskCard task={activeTask} members={members} onDelete={() => {}} onAssign={() => {}} /> : null}
       </DragOverlay>
     </DndContext>
   )

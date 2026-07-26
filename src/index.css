@@ -1,35 +1,36 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-
 :root {
-  /* Palette — cool neutral surface, indigo accent (Linear-ish) */
+  /* Light neutral palette */
   --bg: #f4f5f7;
   --surface: #ffffff;
-  --surface-hover: #fafafa;
-  --border: #e4e5e9;
-  --text: #1a1d23;
-  --text-secondary: #6b7080;
+  --surface-hover: #f7f7f8;
+  --border: #e2e4e9;
+  --text: #1f2329;
+  --text-secondary: #5f6673;
   --text-tertiary: #9aa0ad;
-  --accent: #5b5bd6;
-  --accent-soft: #eeeefc;
-  --danger: #d6455b;
 
-  /* Status colors — used for column accents */
+  /* Primary accent */
+  --accent: #1677ff;
+  --accent-hover: #4096ff;
+  --accent-soft: #e6f4ff;
+  --danger: #f5222d;
+
+  /* Status colors (column dots) */
   --status-todo: #9aa0ad;
-  --status-in_progress: #4a8fd6;
-  --status-in_review: #c98a2e;
-  --status-done: #3d9a6a;
+  --status-in_progress: #1677ff;
+  --status-in_review: #faad14;
+  --status-done: #52c41a;
 
-  /* Priority */
-  --priority-high: #d6455b;
-  --priority-normal: #4a8fd6;
+  /* Priority colors */
+  --priority-high: #f5222d;
+  --priority-normal: #1677ff;
   --priority-low: #9aa0ad;
 
-  /* Type & spacing */
-  --font: 'Inter', system-ui, sans-serif;
-  --radius: 8px;
-  --radius-lg: 12px;
-  --shadow-card: 0 1px 2px rgba(20, 22, 30, 0.06), 0 1px 3px rgba(20, 22, 30, 0.04);
-  --shadow-lifted: 0 8px 24px rgba(20, 22, 30, 0.14);
+  /* Type & shape */
+  --font: system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+  --radius: 6px;
+  --radius-lg: 8px;
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.06);
+  --shadow-lifted: 0 6px 16px rgba(0, 0, 0, 0.12);
 }
 
 * { box-sizing: border-box; }
@@ -40,6 +41,6 @@ body {
   background: var(--bg);
   color: var(--text);
   font-size: 14px;
-  line-height: 1.45;
+  line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }

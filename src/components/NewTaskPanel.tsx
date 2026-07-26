@@ -1,21 +1,23 @@
 // Component for creating a new task
 
 import { useState } from 'react'
-import type { Priority } from '../types'
+import type { Priority, TeamMember} from '../types'
 
 interface Props {
   open: boolean
   onClose: () => void
-  onCreate: (input: { title: string; description?: string; priority?: Priority; due_date?: string }) => Promise<{ error: string | null }>
+  members: TeamMember[]
+  onCreate: (input: { title: string; description?: string; priority?: Priority; due_date?: string; assignee_id?: string }) => Promise<{ error: string | null }>
 }
 
-export function NewTaskPanel({ open, onClose, onCreate }: Props) {
+export function NewTaskPanel({ open, onClose, onCreate, members }: Props) {
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [priority, setPriority] = useState<Priority>('normal')
   const [dueDate, setDueDate] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [assigneeId, setAssigneeId] = useState('')
 
   if (!open) return null
 
@@ -32,6 +34,7 @@ export function NewTaskPanel({ open, onClose, onCreate }: Props) {
       description: description.trim() || undefined,
       priority,
       due_date: dueDate || undefined,
+      assignee_id: assigneeId || undefined,
     })
     setSubmitting(false)
     if (error) {
@@ -85,6 +88,16 @@ export function NewTaskPanel({ open, onClose, onCreate }: Props) {
             <input type="date" value={dueDate} onChange={e => setDueDate(e.target.value)} />
           </label>
         </div>
+
+        <label className="field">
+          <span>Assignee</span>
+          <select value={assigneeId} onChange={e => setAssigneeId(e.target.value)}>
+            <option value="">Unassigned</option>
+            {members.map(m => (
+              <option key={m.id} value={m.id}>{m.name}</option>
+            ))}
+          </select>
+        </label>
 
         {error && <div className="form-error">{error}</div>}
 

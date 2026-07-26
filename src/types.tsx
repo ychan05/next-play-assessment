@@ -22,3 +22,11 @@ export const COLUMNS: { id: Status; label: string }[] = [
   { id: 'in_review', label: 'In Review' },
   { id: 'done', label: 'Done' },
 ]
+
+export interface TeamMember {
+  id: string
+  name: string
+  color: string
+  user_id: string
+  created_at: string
+}
