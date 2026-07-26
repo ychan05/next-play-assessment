@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { supabase } from '../lib/supabase'
-import type { Priority, Task } from '../types'
+import type { Status, Priority, Task } from '../types'
 
 export function useTasks(userId: string | undefined) {
   const [tasks, setTasks] = useState<Task[]>([])
@@ -15,7 +15,7 @@ export function useTasks(userId: string | undefined) {
 
     setError(null)
     
-    const { data, error } = await supabase.from('tasks').select('*').order('position', { ascending: false })
+    const { data, error } = await supabase.from('tasks').select('*').order('position', { ascending: true })
 
     if (error) {
       setError(error.message)
@@ -78,5 +78,19 @@ export function useTasks(userId: string | undefined) {
 
   }, [userId])
 
-  return { tasks, setTasks, loading, error, refetch: fetchTasks, createTask }
+  // move tasks using drag and drop
+  const moveTask = useCallback(async (taskId: string, newStatus: Status, newPosition: number) => {
+    setTasks(prev => prev.map(task => task.id === taskId ? {...task, status: newStatus, position: newPosition } : task))
+
+    const { error } = await supabase.from('tasks').update({ status: newStatus, position: newPosition }).eq('id', taskId)
+
+    if (error) {
+      setError(error.message)
+      fetchTasks()
+      return { error: error.message }
+    }
+    return { error: null }
+  }, [fetchTasks])
+
+  return { tasks, setTasks, loading, error, refetch: fetchTasks, createTask, moveTask }
 }

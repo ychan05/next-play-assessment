@@ -63,7 +63,24 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
-.card-meta { display: flex; gap: 6px; margin-top: 8px; }
+.card-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.due-date {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-tertiary);
+  background: var(--surface-hover);
+  padding: 2px 7px;
+  border-radius: 999px;
+}
 
 .priority {
   font-size: 11px;
@@ -143,6 +160,7 @@
   gap: 14px;
   box-shadow: var(--shadow-lifted);
   animation: slide-in 180ms ease-out;
+  overflow-y: auto; 
 }
 @keyframes slide-in {
   from { transform: translateX(24px); opacity: 0; }
@@ -159,7 +177,8 @@
   color: var(--text-tertiary); font-size: 14px;
 }
 
-.field { display: flex; flex-direction: column; gap: 5px; font-size: 12.5px; color: var(--text-secondary); flex: 1; }
+.field { display: flex; flex-direction: column; gap: 5px; font-size: 12.5px; color: var(--text-secondary);}
+.field-row .field { flex: 1; }
 .field input, .field textarea, .field select {
   font: inherit;
   font-size: 13.5px;
@@ -184,4 +203,11 @@
   border-radius: var(--radius);
 }
 
-.panel-footer { display: flex; justify-content: flex-end; gap: 8px; margin-top: auto; }
+.panel-footer { display: flex; justify-content: flex-end; gap: 8px; margin-top: 6px; }
+
+.card {
+  touch-action: none;
+}
+.column-body {
+  min-height: 40px; 
+}

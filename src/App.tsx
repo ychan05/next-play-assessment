@@ -5,8 +5,8 @@ import { Board } from './components/Board'
 import { NewTaskPanel } from './components/NewTaskPanel'
 
 export default function App() {
-  const { user, loading: authLoading, error: authError } = useGuestSession()
-  const { tasks, loading: tasksLoading, error: tasksError, createTask } = useTasks(user?.id)
+  const { user, isLoading: authLoading, error: authError } = useGuestSession()
+  const { tasks, loading: tasksLoading, error: tasksError, createTask, moveTask} = useTasks(user?.id)
   const [panelOpen, setPanelOpen] = useState(false)
 
   if (authLoading || (user && tasksLoading)) {
@@ -20,9 +20,13 @@ export default function App() {
     <>
       <header className="app-header">
         <h1>Task Board</h1>
+        <h1>User ID: {user?.id}</h1>
         <button className="btn-primary" onClick={() => setPanelOpen(true)}>+ New task</button>
       </header>
-      <Board tasks={tasks} />
+      <Board
+        tasks={tasks}
+        onMove={(taskId, newStatus, newPosition) => moveTask(taskId, newStatus, newPosition)}
+      />
       <NewTaskPanel
         open={panelOpen}
         onClose={() => setPanelOpen(false)}
