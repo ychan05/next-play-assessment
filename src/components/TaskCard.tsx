@@ -9,6 +9,7 @@ export function TaskCard({ task }: { task: Task }) {
         {task.description && <div className="card-description">{task.description}</div>}
         <div className="card-meta">
             <span className={`priority priority-${task.priority}`}>{task.priority}</span>
+            <span className = {`due-date`}>{"Due: " + (task.due_date ?? 'No due date')}</span>
         </div>
     </div>
   )
