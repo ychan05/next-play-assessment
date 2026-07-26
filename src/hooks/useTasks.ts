@@ -92,5 +92,22 @@ export function useTasks(userId: string | undefined) {
     return { error: null }
   }, [fetchTasks])
 
-  return { tasks, setTasks, loading, error, refetch: fetchTasks, createTask, moveTask }
+
+  // remove a task
+  const removeTask = useCallback(async (taskId: string) => {
+    // keep the previous state just in case
+    const previous = tasks
+
+    setTasks(prev => prev.filter(task => task.id !== taskId))
+
+    const { error } = await supabase.from('tasks').delete().eq('id', taskId)
+
+    if (error) {
+      setTasks(previous)
+      return { error: error.message }
+    }
+    return { error: null }
+  }, [tasks])
+
+  return { tasks, setTasks, loading, error, refetch: fetchTasks, createTask, moveTask, removeTask }
 }

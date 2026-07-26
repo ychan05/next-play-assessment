@@ -9,9 +9,10 @@ interface Props {
   id: Status
   label: string
   tasks: Task[]
+  onDelete: (taskId: string) => void
 }
 
-export function Column({ id, label, tasks }: Props) {
+export function Column({ id, label, tasks, onDelete }: Props) {
   const { setNodeRef } = useDroppable({ id })
 
   return (
@@ -26,7 +27,7 @@ export function Column({ id, label, tasks }: Props) {
             {tasks.length === 0 ? (
             <div className="empty-state">No tasks yet</div>
             ) : (
-            tasks.map(task => <TaskCard key={task.id} task={task} />)
+            tasks.map(task => <TaskCard key={task.id} task={task} onDelete={onDelete} />)
             )}
         </SortableContext>
       </div>

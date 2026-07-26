@@ -19,9 +19,10 @@ import { computePosition } from '../lib/position'
 interface Props {
   tasks: Task[]
   onMove: (taskId: string, newStatus: Status, newPosition: number) => void
+  onDelete: (taskId: string) => void
 }
 
-export function Board({ tasks, onMove }: Props) {
+export function Board({ tasks, onMove, onDelete }: Props) {
   const [activeTask, setActiveTask] = useState<Task | null>(null)
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 4 } })
@@ -124,11 +125,12 @@ function handleDragEnd(event: DragEndEvent) {
             id={col.id}
             label={col.label}
             tasks={tasks.filter(task => task.status === col.id).sort((a, b) => a.position - b.position)}
+            onDelete={onDelete}
           />
         ))}
       </div>
       <DragOverlay>
-        {activeTask ? <TaskCard task={activeTask} /> : null}
+        {activeTask ? <TaskCard task={activeTask} onDelete={() => {}} /> : null}
       </DragOverlay>
     </DndContext>
   )
