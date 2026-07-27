@@ -40,7 +40,3 @@ A Kanban-style task board built with React, TypeScript, and Vite, backed by Supa
    ```
 
 **Requires Node.js v22.23.1.**
-
-## Database
-
-Two tables (`tasks`, `team_members`), both scoped per guest user via RLS. Full schema in `schema.sql`.
