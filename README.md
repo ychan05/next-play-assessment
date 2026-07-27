@@ -1,75 +1,46 @@
-# React + TypeScript + Vite
+# Task Board
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A Kanban-style task board built with React, TypeScript, and Vite, backed by Supabase (Postgres + Auth).
 
-Currently, two official plugins are available:
+**Live app:** [[your-app.vercel.app](https://next-play-assessment-phi.vercel.app/)]([https://your-app.vercel.app](https://next-play-assessment-phi.vercel.app/))
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Features
 
-## React Compiler
+- Anonymous guest sessions — no sign-up required, each user only sees their own board
+- Drag-and-drop task board (To Do / In Progress / In Review / Done)
+- Create, assign, and delete tasks with priority and due date
+- Team members with task assignees
+- Due date urgency badges (overdue, due today, due soon)
+- Live stats bar (total, completed, overdue, due soon)
+- Row Level Security enforced at the database level
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Tech Stack
 
-## Expanding the ESLint configuration
+- React + TypeScript + Vite
+- Supabase (Postgres, Auth, RLS)
+- `@dnd-kit` for drag-and-drop
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Setup
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+1. Create a [Supabase](https://supabase.com) project.
+2. Run the SQL in `schema.sql` in the Supabase SQL Editor.
+3. Enable **Authentication → Sign In / Providers → Anonymous sign-ins**.
+4. Clone this repo and install dependencies:
+   ```bash
+   npm install
+   ```
+5. Create `.env.local` in the project root:
+   ```
+   VITE_SUPABASE_URL=https://your-project-ref.supabase.co
+   VITE_SUPABASE_ANON_KEY=your-anon-public-key
+   ```
+6. Run the dev server:
+   ```bash
+   npm run dev
+   ```
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+**Requires Node.js v22.23.1.**
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Database
 
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
-```
+Two tables (`tasks`, `team_members`), both scoped per guest user via RLS. Full schema in `schema.sql`.
