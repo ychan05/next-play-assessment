@@ -2,7 +2,7 @@
 
 A Kanban-style task board built with React, TypeScript, and Vite, backed by Supabase (Postgres + Auth).
 
-**Live app:** [[your-app.vercel.app](https://next-play-assessment-phi.vercel.app/)]([https://your-app.vercel.app](https://next-play-assessment-phi.vercel.app/))
+**Live app:** https://next-play-assessment-phi.vercel.app/
 
 ## Features
 
